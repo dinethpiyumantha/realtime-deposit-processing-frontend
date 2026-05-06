@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 
@@ -20,22 +20,31 @@ interface CallbackFailedEvent {
  *
  * On each (re)connect, invalidates wallet queries to reconcile any
  * events missed while offline.
+ *
+ * The socket lifecycle is tied to the set of wallet addresses, not the
+ * array reference, so periodic refetches of the wallet list do not
+ * cause unnecessary reconnects.
  */
 export function useDepositSocket(wallets: Wallet[]) {
   const queryClient = useQueryClient()
+  // Keep latest wallets accessible inside the effect without adding the
+  // unstable array reference to the dependency array.
+  const walletsRef = useRef(wallets)
+  walletsRef.current = wallets
+
+  // Stable key — only changes when wallets are added or removed.
+  const walletAddressesKey = wallets.map((w) => w.address).join(',')
 
   useEffect(() => {
     depositsSocket.connect()
 
     const handleConnect = () => {
-      // Reconcile via REST on every (re)connect to catch missed events
-      wallets.forEach((w) => {
+      walletsRef.current.forEach((w) => {
         queryClient.invalidateQueries({ queryKey: ['wallet', w.address] })
       })
     }
 
     const handleProcessed = (tx: Transaction) => {
-      // Push update directly into the cache — no refetch needed
       queryClient.setQueryData<WalletWithTransactions>(
         ['wallet', tx.walletAddress],
         (old) => {
@@ -68,5 +77,6 @@ export function useDepositSocket(wallets: Wallet[]) {
       depositsSocket.off('deposit.callback_failed', handleCallbackFailed)
       depositsSocket.disconnect()
     }
-  }, [wallets, queryClient])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [walletAddressesKey, queryClient])
 }

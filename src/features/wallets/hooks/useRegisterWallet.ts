@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import axios from 'axios'
 import { registerWallet } from '@/services/wallets.service'
+import { getAxiosErrorMessage } from '@/lib/utils'
 import { WALLETS_QUERY_KEY } from './useWallets'
 
 export function useRegisterWallet() {
@@ -14,16 +15,10 @@ export function useRegisterWallet() {
       toast.success(`Wallet "${wallet.address}" registered successfully`)
     },
     onError: (err) => {
-      if (axios.isAxiosError(err)) {
-        const msg = err.response?.data?.message
-        const detail = Array.isArray(msg) ? msg.join(', ') : msg
-        if (err.response?.status === 409) {
-          toast.error(`Wallet already registered`)
-        } else {
-          toast.error(detail ?? 'Failed to register wallet')
-        }
+      if (axios.isAxiosError(err) && err.response?.status === 409) {
+        toast.error('Wallet already registered')
       } else {
-        toast.error('Failed to register wallet')
+        toast.error(getAxiosErrorMessage(err, 'Failed to register wallet'))
       }
     },
   })

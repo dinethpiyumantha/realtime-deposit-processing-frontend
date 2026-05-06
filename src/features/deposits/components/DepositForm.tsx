@@ -75,8 +75,8 @@ export function DepositForm() {
           <Label htmlFor="deposit-amount">Amount</Label>
           <Input
             id="deposit-amount"
-            type="number"
-            step="0.00000001"
+            type="text"
+            inputMode="decimal"
             placeholder="e.g. 1.5"
             {...register('amount')}
             className={errors.amount ? 'border-red-500' : ''}

@@ -76,7 +76,7 @@ export function DashboardPage() {
             <CardHeader className="pb-3">
               <CardTitle className="text-base">Transactions</CardTitle>
               <CardDescription>
-                All transactions across registered wallets — auto-refreshes every 3s
+                All transactions across registered wallets — real-time via WebSocket, 30s REST fallback
               </CardDescription>
             </CardHeader>
             <CardContent>
