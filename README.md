@@ -1,3 +1,27 @@
+# Realtime Deposit Processing — Frontend
+
+> **[Project Setup & Installation →](docs/SETUP.md)**
+
+A React dashboard for real-time deposit processing. Wallets are registered, deposits are ingested via a REST API, and transaction status updates are pushed instantly to the UI over a WebSocket connection.
+
+Built with **React 19 · TypeScript · Vite 8 · Tailwind CSS v4 · Socket.IO**.
+
+---
+
+## Quick Start
+
+```bash
+cp .env.example .env   # set VITE_API_BASE_URL if the backend runs elsewhere
+npm install
+npm run dev            # http://localhost:5173
+```
+
+For Docker, environment configuration, scripts reference, and architecture details, see [docs/SETUP.md](docs/SETUP.md).
+
+---
+
+<!-- Original Vite template notes below -->
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
