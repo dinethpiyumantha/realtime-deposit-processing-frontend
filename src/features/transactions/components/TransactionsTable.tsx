@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import {
   useReactTable,
   getCoreRowModel,
@@ -11,6 +11,7 @@ import {
 import { ArrowUpDown, Radio } from 'lucide-react'
 
 import { useTransactions } from '../hooks/useTransactions'
+import { depositsSocket } from '@/lib/socket'
 import { StatusBadge } from './StatusBadge'
 import { Input } from '@/components/ui/input'
 import {
@@ -77,6 +78,18 @@ export function TransactionsTable() {
   const [globalFilter, setGlobalFilter] = useState('')
   const [statusFilter, setStatusFilter] = useState<string>('ALL')
   const [sorting, setSorting] = useState<SortingState>([{ id: 'createdAt', desc: true }])
+  const [socketConnected, setSocketConnected] = useState(depositsSocket.connected)
+
+  useEffect(() => {
+    const onConnect = () => setSocketConnected(true)
+    const onDisconnect = () => setSocketConnected(false)
+    depositsSocket.on('connect', onConnect)
+    depositsSocket.on('disconnect', onDisconnect)
+    return () => {
+      depositsSocket.off('connect', onConnect)
+      depositsSocket.off('disconnect', onDisconnect)
+    }
+  }, [])
 
   const filtered = useMemo(() => {
     if (statusFilter === 'ALL') return transactions
@@ -129,8 +142,10 @@ export function TransactionsTable() {
         </div>
         {/* Live indicator */}
         <div className="ml-auto flex items-center gap-1.5 text-xs text-muted-foreground">
-          <Radio className="size-3 animate-pulse text-green-500" />
-          Live · 3s
+          <Radio
+            className={`size-3 animate-pulse ${socketConnected ? 'text-green-500' : 'text-yellow-500'}`}
+          />
+          {socketConnected ? 'Live · WS' : 'Connecting…'}
         </div>
       </div>
 
