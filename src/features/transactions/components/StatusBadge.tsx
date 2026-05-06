@@ -19,9 +19,5 @@ const config: Record<TransactionStatus, { label: string; className: string }> = 
 
 export function StatusBadge({ status }: { status: TransactionStatus }) {
   const { label, className } = config[status]
-  return (
-    <Badge className={cn('text-xs font-medium', className)}>
-      {label}
-    </Badge>
-  )
+  return <Badge className={cn('text-xs font-medium', className)}>{label}</Badge>
 }

@@ -29,20 +29,18 @@ const helper = createColumnHelper<Transaction>()
 const columns = [
   helper.accessor('walletAddress', {
     header: 'Wallet',
-    cell: (info) => (
-      <span className="font-mono text-xs">{info.getValue()}</span>
-    ),
+    cell: (info) => <span className="font-mono text-xs">{info.getValue()}</span>,
   }),
   helper.accessor('transactionHash', {
     header: 'Transaction Hash',
     cell: (info) => (
-      <span className="max-w-[160px] truncate font-mono text-xs block">{info.getValue()}</span>
+      <span className="block max-w-[160px] truncate font-mono text-xs">{info.getValue()}</span>
     ),
   }),
   helper.accessor('amount', {
     header: ({ column }) => (
       <button
-        className="flex items-center gap-1 hover:text-foreground"
+        className="hover:text-foreground flex items-center gap-1"
         onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
       >
         Amount <ArrowUpDown className="size-3" />
@@ -59,14 +57,14 @@ const columns = [
   helper.accessor('createdAt', {
     header: ({ column }) => (
       <button
-        className="flex items-center gap-1 hover:text-foreground"
+        className="hover:text-foreground flex items-center gap-1"
         onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
       >
         Created <ArrowUpDown className="size-3" />
       </button>
     ),
     cell: (info) => (
-      <span className="text-xs text-muted-foreground">
+      <span className="text-muted-foreground text-xs">
         {new Date(info.getValue()).toLocaleString()}
       </span>
     ),
@@ -130,10 +128,10 @@ export function TransactionsTable() {
             <button
               key={s}
               onClick={() => setStatusFilter(s)}
-              className={`h-8 rounded-md px-2.5 text-xs font-medium transition-colors border ${
+              className={`h-8 rounded-md border px-2.5 text-xs font-medium transition-colors ${
                 statusFilter === s
                   ? 'bg-foreground text-background border-foreground'
-                  : 'bg-transparent text-muted-foreground border-border hover:text-foreground hover:border-foreground/40'
+                  : 'text-muted-foreground border-border hover:text-foreground hover:border-foreground/40 bg-transparent'
               }`}
             >
               {s === 'ALL' ? 'All' : s.charAt(0) + s.slice(1).toLowerCase()}
@@ -141,7 +139,7 @@ export function TransactionsTable() {
           ))}
         </div>
         {/* Live indicator */}
-        <div className="ml-auto flex items-center gap-1.5 text-xs text-muted-foreground">
+        <div className="text-muted-foreground ml-auto flex items-center gap-1.5 text-xs">
           <Radio
             className={`size-3 animate-pulse ${socketConnected ? 'text-green-500' : 'text-yellow-500'}`}
           />
@@ -150,13 +148,13 @@ export function TransactionsTable() {
       </div>
 
       {/* Table */}
-      <div className="rounded-lg border border-border overflow-hidden">
+      <div className="border-border overflow-hidden rounded-lg border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((hg) => (
               <TableRow key={hg.id} className="bg-muted/50">
                 {hg.headers.map((h) => (
-                  <TableHead key={h.id} className="text-xs font-semibold text-foreground">
+                  <TableHead key={h.id} className="text-foreground text-xs font-semibold">
                     {flexRender(h.column.columnDef.header, h.getContext())}
                   </TableHead>
                 ))}
@@ -169,7 +167,7 @@ export function TransactionsTable() {
                 <TableRow key={i}>
                   {columns.map((_, j) => (
                     <TableCell key={j}>
-                      <div className="h-4 animate-pulse rounded bg-muted" />
+                      <div className="bg-muted h-4 animate-pulse rounded" />
                     </TableCell>
                   ))}
                 </TableRow>
@@ -184,7 +182,7 @@ export function TransactionsTable() {
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="py-8 text-center text-sm text-muted-foreground"
+                  className="text-muted-foreground py-8 text-center text-sm"
                 >
                   No transactions found.
                 </TableCell>
@@ -205,7 +203,7 @@ export function TransactionsTable() {
       </div>
 
       {!isLoading && (
-        <p className="text-xs text-muted-foreground">
+        <p className="text-muted-foreground text-xs">
           {table.getRowModel().rows.length} of {transactions.length} transaction
           {transactions.length !== 1 ? 's' : ''}
         </p>

@@ -5,14 +5,14 @@ import type { Wallet as WalletType } from '@/types'
 
 function WalletCard({ wallet }: { wallet: WalletType }) {
   return (
-    <Card className="border border-border bg-background">
+    <Card className="border-border bg-background border">
       <CardContent className="flex items-center gap-3 p-3">
-        <div className="flex size-8 shrink-0 items-center justify-center rounded border border-border bg-muted">
-          <Wallet className="size-4 text-foreground" />
+        <div className="border-border bg-muted flex size-8 shrink-0 items-center justify-center rounded border">
+          <Wallet className="text-foreground size-4" />
         </div>
         <div className="min-w-0 flex-1">
           <p className="truncate font-mono text-sm font-medium">{wallet.address}</p>
-          <p className="text-xs text-muted-foreground">
+          <p className="text-muted-foreground text-xs">
             {new Date(wallet.createdAt).toLocaleString()}
           </p>
         </div>
@@ -22,9 +22,7 @@ function WalletCard({ wallet }: { wallet: WalletType }) {
 }
 
 function SkeletonCard() {
-  return (
-    <div className="h-[60px] animate-pulse rounded-lg border border-border bg-muted" />
-  )
+  return <div className="border-border bg-muted h-[60px] animate-pulse rounded-lg border" />
 }
 
 export function WalletList() {
@@ -41,14 +39,12 @@ export function WalletList() {
   }
 
   if (isError) {
-    return (
-      <p className="text-sm text-red-500">Failed to load wallets. Is the backend running?</p>
-    )
+    return <p className="text-sm text-red-500">Failed to load wallets. Is the backend running?</p>
   }
 
   if (!wallets || wallets.length === 0) {
     return (
-      <p className="py-4 text-center text-sm text-muted-foreground">
+      <p className="text-muted-foreground py-4 text-center text-sm">
         No wallets registered yet. Add one above.
       </p>
     )

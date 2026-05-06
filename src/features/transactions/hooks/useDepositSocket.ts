@@ -45,25 +45,22 @@ export function useDepositSocket(wallets: Wallet[]) {
     }
 
     const handleProcessed = (tx: Transaction) => {
-      queryClient.setQueryData<WalletWithTransactions>(
-        ['wallet', tx.walletAddress],
-        (old) => {
-          if (!old) return old
-          const exists = old.transactions.some((t) => t.id === tx.id)
-          return {
-            ...old,
-            transactions: exists
-              ? old.transactions.map((t) => (t.id === tx.id ? tx : t))
-              : [tx, ...old.transactions],
-          }
-        },
-      )
+      queryClient.setQueryData<WalletWithTransactions>(['wallet', tx.walletAddress], (old) => {
+        if (!old) return old
+        const exists = old.transactions.some((t) => t.id === tx.id)
+        return {
+          ...old,
+          transactions: exists
+            ? old.transactions.map((t) => (t.id === tx.id ? tx : t))
+            : [tx, ...old.transactions],
+        }
+      })
     }
 
     const handleCallbackFailed = (event: CallbackFailedEvent) => {
       toast.warning(
         `Callback failed for TX ${event.transactionHash.slice(0, 14)}…: ${event.reason}`,
-        { duration: 8000 },
+        { duration: 8000 }
       )
     }
 
@@ -77,6 +74,6 @@ export function useDepositSocket(wallets: Wallet[]) {
       depositsSocket.off('deposit.callback_failed', handleCallbackFailed)
       depositsSocket.disconnect()
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [walletAddressesKey, queryClient])
 }

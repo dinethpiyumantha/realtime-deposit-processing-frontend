@@ -12,9 +12,7 @@ export function useIngestDeposit() {
     onSuccess: (data) => {
       qc.invalidateQueries({ queryKey: WALLETS_QUERY_KEY })
       if (data.idempotent) {
-        toast.info(
-          `Duplicate transaction — already exists with status: ${data.transaction.status}`
-        )
+        toast.info(`Duplicate transaction — already exists with status: ${data.transaction.status}`)
       } else {
         toast.success(`Deposit submitted — processing started (TX: ${data.transaction.id})`)
       }

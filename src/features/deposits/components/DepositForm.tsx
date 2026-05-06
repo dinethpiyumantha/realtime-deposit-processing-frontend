@@ -11,10 +11,7 @@ import { Label } from '@/components/ui/label'
 
 const schema = z.object({
   walletAddress: z.string().min(1, 'Select a wallet'),
-  transactionHash: z
-    .string()
-    .min(1, 'Transaction hash is required')
-    .max(255, 'Max 255 characters'),
+  transactionHash: z.string().min(1, 'Transaction hash is required').max(255, 'Max 255 characters'),
   amount: z
     .string()
     .min(1, 'Amount is required')
@@ -39,10 +36,7 @@ export function DepositForm() {
   } = useForm<FormValues>({ resolver: zodResolver(schema) })
 
   const onSubmit = (values: FormValues) => {
-    mutate(
-      { ...values, amount: Number(values.amount) },
-      { onSuccess: () => reset() }
-    )
+    mutate({ ...values, amount: Number(values.amount) }, { onSuccess: () => reset() })
   }
 
   return (
@@ -54,7 +48,7 @@ export function DepositForm() {
           <select
             id="deposit-wallet"
             {...register('walletAddress')}
-            className={`flex h-8 w-full rounded-lg border bg-transparent px-2.5 py-0 text-sm outline-none transition-colors focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 ${
+            className={`focus-visible:border-ring focus-visible:ring-ring/50 flex h-8 w-full rounded-lg border bg-transparent px-2.5 py-0 text-sm transition-colors outline-none focus-visible:ring-3 disabled:cursor-not-allowed disabled:opacity-50 ${
               errors.walletAddress ? 'border-red-500' : 'border-input'
             }`}
           >
@@ -100,7 +94,11 @@ export function DepositForm() {
       </div>
 
       <Button type="submit" disabled={isPending}>
-        {isPending ? <Loader2 className="mr-2 size-4 animate-spin" /> : <Send className="mr-2 size-4" />}
+        {isPending ? (
+          <Loader2 className="mr-2 size-4 animate-spin" />
+        ) : (
+          <Send className="mr-2 size-4" />
+        )}
         Submit Deposit
       </Button>
     </form>

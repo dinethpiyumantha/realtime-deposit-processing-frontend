@@ -20,13 +20,13 @@ export function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="bg-background min-h-screen">
       {/* Header */}
-      <header className="sticky top-0 z-10 border-b border-border bg-background/95 backdrop-blur-sm">
+      <header className="border-border bg-background/95 sticky top-0 z-10 border-b backdrop-blur-sm">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
           <div className="flex items-center gap-2.5">
-            <div className="flex size-7 items-center justify-center rounded-md border border-border bg-foreground">
-              <span className="text-xs font-bold text-background">D</span>
+            <div className="border-border bg-foreground flex size-7 items-center justify-center rounded-md border">
+              <span className="text-background text-xs font-bold">D</span>
             </div>
             <span className="font-semibold tracking-tight">Deposit Processing</span>
           </div>
@@ -39,7 +39,6 @@ export function DashboardPage() {
 
       {/* Main content */}
       <main className="mx-auto max-w-5xl space-y-6 px-4 py-6">
-
         {/* Wallets section */}
         <section>
           <Card>
@@ -76,7 +75,8 @@ export function DashboardPage() {
             <CardHeader className="pb-3">
               <CardTitle className="text-base">Transactions</CardTitle>
               <CardDescription>
-                All transactions across registered wallets — real-time via WebSocket, 30s REST fallback
+                All transactions across registered wallets — real-time via WebSocket, 30s REST
+                fallback
               </CardDescription>
             </CardHeader>
             <CardContent>

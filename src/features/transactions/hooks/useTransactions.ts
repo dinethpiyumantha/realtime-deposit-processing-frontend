@@ -33,7 +33,7 @@ export function useTransactions() {
         .flatMap((q) => q.data?.transactions ?? [])
         .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [walletQueries.map((q) => q.dataUpdatedAt).join(',')],
+    [walletQueries.map((q) => q.dataUpdatedAt).join(',')]
   )
 
   return { transactions, isLoading, isError }
