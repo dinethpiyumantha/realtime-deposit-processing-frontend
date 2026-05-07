@@ -10,7 +10,6 @@
 ## Limitations
 
 - **No token expiry** — the API key persists in `localStorage` until the user signs out or a 401 is received.
-- **No pagination** — all transactions for all wallets are fetched and rendered in a single table. Performance degrades with large transaction volumes.
 - **Single dashboard** — the app has one route (`/dashboard`). Multi-user or multi-tenant views are out of scope.
 - **Callback failures are informational only** — the `deposit.callback_failed` toast is a warning; there is no retry mechanism in the UI.
 - **WebSocket auth** — the socket connection does not send the API key (the backend `/deposits` namespace does not require it in this implementation).
