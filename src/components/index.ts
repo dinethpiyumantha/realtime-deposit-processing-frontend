@@ -5,4 +5,3 @@ export { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 export { Badge } from './ui/badge'
 export { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table'
 export { Separator } from './ui/separator'
-export { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
